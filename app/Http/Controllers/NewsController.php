@@ -79,11 +79,14 @@ class NewsController extends Controller
     // Get filtered news based on user preferences
     public function getNews()
     {
+
+        $this->fetchNews();
         $user = auth()->user();
         $filters = Settings::firstOrNew(['user_id' => $user->id]);
-        $filteredSources = json_decode($filters['sources']);
-        $filteredCategories = json_decode($filters['categories']);
-        $filteredAuthors = json_decode($filters['authors']);
+        $filteredSources = json_decode($filters['sources'] ?? '[]');
+
+        $filteredCategories = json_decode($filters['categories'] ?? '[]');
+        $filteredAuthors = json_decode($filters['authors'] ?? '[]');
 
         $newsQuery = News::query();
 
